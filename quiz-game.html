@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="game.css">
+    </head>
+    <body onload="initGame()">
+        <div id="game-panel"></div>
+    </body>
+</html>
+<script src="Config.js"></script>
+<!-- <script src="Card.js"></script> -->
+<script src="Face.js"></script>
+<script src="GameObject.js"></script>
+<script src="QuizGameObject.js"></script>
+<script src="BasicGameCore.js"></script>
+<script src="BasicGameView.js"></script>
+<script src="GameView.js"></script>
+<script src="QuizGameView.js"></script>
+<script>
+var gamePanel = document.getElementById('game-panel');
+
+async function initGame() {
+    var cards = await getCard();
+    let index = 0;
+    let quizGameObjects = [];
+    for(let card of cards){
+        quizGameObjects.push(new QuizGameObject(index++, card));
+    }
+    gamePanel.appendChild(new BasicGameView(quizGameObjects).asWidget());
+}
+
+function getCard() {
+    return new Promise(function(resolve, reject) {
+        $.getJSON('./cards-data.json', function(cards) {
+            resolve(cards);
+        });
+    });
+}
+</script>
